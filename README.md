@@ -20,10 +20,10 @@ As you have set in your script info file, there is another file path that points
 ```mi
 mod hello {
 
-	fn on_enable {
-		console.log("&dhiiii! >:3");
-	}
-
+    fn on_enable {
+        console.log("&dhiiii! >:3");
+    }
+    
 }
 ```
 The first line dictates that we will be using a module called 'hello'. THIS is what you set in your script info file as the `module` key. It acts like a 
