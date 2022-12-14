@@ -11,18 +11,15 @@ import org.crayne.mi.bytecode.communication.MiExecutionException;
 import org.crayne.mi.bytecode.reader.ByteCodeInterpreter;
 import org.jetbrains.annotations.NotNull;
 import org.mineblock.miscript.script.MiScript;
-import org.mineblock.miscript.script.std.MiscLib;
 import org.mineblock.miscript.script.event.MiscEventHandler;
+import org.mineblock.miscript.script.std.MiscLib;
 import org.mineblock.miscript.util.Colorization;
 
 import java.awt.*;
 import java.io.File;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Level;
 
 public final class MiScriptPlugin extends JavaPlugin {
