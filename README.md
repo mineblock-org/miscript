@@ -27,7 +27,7 @@ mod hello {
 }
 ```
 The first line dictates that we will be using a module called 'hello'. THIS is what you set in your script info file as the `module` key. It acts like a 
-sort of "packaging" / categorizing for your code; Thats just where your main functionality for the script goes. The main function `on_enable` always runs when the script is loading (there is also `on_disable`, but it is rarely needed). You may create other modules to further package different functions into
+sort of "packaging" / categorizing for your code; Thats just where your main functionality for the script goes. The main function `on_enable` always runs when the script is loaded (there is also `on_disable`, but it is rarely needed). You may create other modules to further package different functions into
 grouped purposes in your code as you like.
 In this example, all the function does is message the console with 'hiiii! >:3' in a pink text.
 ## Testing the code
