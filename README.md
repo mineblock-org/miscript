@@ -20,10 +20,9 @@ As you have set in your script info file, there is another file path that points
 ```mi
 mod hello {
 
-    fn on_enable {
-        use misc;
-        console_log("&dhiiii! >:3");
-    }
+	fn on_enable {
+		console.log("&dhiiii! >:3");
+	}
 
 }
 ```
