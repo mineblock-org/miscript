@@ -16,8 +16,7 @@ authors = [ "crxyne" ]
 ```
 Here you add all the info misc will need to execute your scripts. We will find out what the `module` here means exactly in a bit.
 ## Adding the code
-As you have set in your script info file, there is another file path that points to the actual code of your script. For simple purposes of this quick start,
-here is the code for a simple hello-world script:
+As you have set in your script info file, there is another file path that points to the actual code of your script. Create that as a new blank file; That is where your code will go. For simple purposes of this quick start, here is the code for a simple hello-world script:
 ```mi
 mod hello {
 
