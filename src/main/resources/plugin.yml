@@ -1,0 +1,7 @@
+name: MiScriptPlugin
+version: '${project.version}'
+main: org.mineblock.miscript.MiScriptPlugin
+api-version: 1.19
+softdepend: [ WorldGuard, LuckPerms ]
+authors: [ crayne ]
+description: easily manage tiny functionality for your server without creating millions of plugins
