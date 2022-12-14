@@ -2,7 +2,7 @@
 ### A separate scripting system for papermc, to get simple stuff working quickly and easily without complete new plugins
 
 # Getting started
-Use the .jar file in the releases to install the plugin onto the server.
+Use the latest .jar file in the releases section to install the plugin onto the server.
 
 ## Making your first script
 Creating scripts is not hard and done pretty quickly. To start, you should have run the server with the plugin installed at least ONCE.
@@ -29,7 +29,9 @@ mod hello {
 }
 ```
 The first line dictates that we will be using a module called 'hello'. THIS is what you set in your script info file as the `module` key. It acts like a 
-sort of "packaging" / categorizing for your code. The main function `on_enable` is always required (there is also `on_disable`, but it is not needed).
+sort of "packaging" / categorizing for your code; Thats just where your main functionality for the script goes. The main function `on_enable` is always required in this module (there is also `on_disable`, but it is not needed). You may create other modules to further package different functions into
+grouped purposes in your code as you like.
 In this example, all the function does is message the console with 'hiiii! >:3' in a pink text.
 ## Testing the code
-Once you have done this setup, simply reload or restart the server to see an effect (for now, there will be [re]loading commands set too, but later).
+Once you have done this setup, simply reload or restart the server to see an effect (for now, there will be [re]loading commands set too, soon).
+![](https://media.discordapp.net/attachments/730876337132404847/1052336604745842910/image.png)
