@@ -39,10 +39,6 @@ public final class MiScriptPlugin extends JavaPlugin {
         finalizeAllScripts();
     }
 
-    public void onDisable() {
-        MiscEventHandler.unregister();
-    }
-
     public static Plugin plugin() {
         return getPlugin(MiScriptPlugin.class);
     }

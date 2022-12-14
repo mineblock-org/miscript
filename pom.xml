@@ -71,6 +71,11 @@
             <version>0.7.2</version>
         </dependency>
         <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>4.8.152</version>
+        </dependency>
+        <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
             <version>1.19.2-R0.1-SNAPSHOT</version>
