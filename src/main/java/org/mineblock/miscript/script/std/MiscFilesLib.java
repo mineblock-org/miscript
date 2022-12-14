@@ -1,4 +1,4 @@
-package org.mineblock.miscript.script;
+package org.mineblock.miscript.script.std;
 
 import org.crayne.mi.lang.MiCallable;
 import org.jetbrains.annotations.NotNull;

@@ -1,4 +1,4 @@
-package org.mineblock.miscript.script;
+package org.mineblock.miscript.script.std;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;

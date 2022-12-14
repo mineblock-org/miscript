@@ -1,4 +1,4 @@
-package org.mineblock.miscript.script;
+package org.mineblock.miscript.script.std;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;

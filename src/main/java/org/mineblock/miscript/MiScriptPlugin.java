@@ -11,7 +11,8 @@ import org.crayne.mi.bytecode.communication.MiExecutionException;
 import org.crayne.mi.bytecode.reader.ByteCodeInterpreter;
 import org.jetbrains.annotations.NotNull;
 import org.mineblock.miscript.script.MiScript;
-import org.mineblock.miscript.script.MiscLib;
+import org.mineblock.miscript.script.std.MiscLib;
+import org.mineblock.miscript.script.event.MiscEventHandler;
 import org.mineblock.miscript.util.Colorization;
 
 import java.awt.*;
@@ -31,13 +32,15 @@ public final class MiScriptPlugin extends JavaPlugin {
 
     public void onEnable() {
         log(">>> Loading MiScript...", Level.INFO);
+        MiscEventHandler.register();
         loadAllScripts();
         compileAllScripts();
+        registerScriptEvents();
         finalizeAllScripts();
     }
 
     public void onDisable() {
-
+        MiscEventHandler.unregister();
     }
 
     public static Plugin plugin() {
@@ -61,11 +64,22 @@ public final class MiScriptPlugin extends JavaPlugin {
         compiledScripts.forEach(MiScriptPlugin::executeScript);
     }
 
+    private static void registerScriptEvents() {
+        log(Colorization.colorize("Registering all script event listeners...", Color.CYAN.darker()), Level.INFO);
+        compiledScripts.forEach(MiScriptPlugin::registerScriptEventListeners);
+    }
+
+    private static void registerScriptEventListeners(@NotNull final MiScript script, @NotNull final MiCommunicator communicator) {
+        log(Colorization.colorize("    Registering " + script.listeners().size() + " eventlistener(s) for script '" + script.name() + "'...", Color.CYAN), Level.INFO);
+        script.listeners().forEach(l -> MiscEventHandler.registerMiscEventListener(communicator, script, l));
+    }
+
     private static void executeScript(@NotNull final MiScript script, @NotNull final MiCommunicator communicator) {
         log("    Executing script '" + script.name() + "'...", Level.INFO);
         try {
             communicator.invoke(script.module(), "on_enable");
         } catch (final MiExecutionException e) {
+            if (e.getMessage().startsWith("Could not find the Mi function")) return; // ignore when the on_enable function does not exist
             log("    Error executing script: " + e.getMessage(), Level.SEVERE);
         }
     }

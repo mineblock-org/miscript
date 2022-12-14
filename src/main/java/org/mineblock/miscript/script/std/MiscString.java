@@ -1,4 +1,4 @@
-package org.mineblock.miscript.script;
+package org.mineblock.miscript.script.std;
 
 import org.apache.commons.lang3.StringUtils;
 import org.crayne.mi.lang.MiCallable;
