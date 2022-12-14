@@ -5,7 +5,6 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.crayne.mi.lang.MiCallable;
 import org.jetbrains.annotations.NotNull;
-import org.mineblock.miscript.util.Colorization;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -199,20 +198,20 @@ STANDARDLIB_MI_FINISH_CODE;"""
 
     @MiCallable
     public static void log(@NotNull final String script, @NotNull final String msg) {
-        Bukkit.getConsoleSender().sendMessage("(" + script + ") "
-                + Colorization.colorize("[INFO]: " + msg.replace("&", "§"), java.awt.Color.WHITE));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "(" + script + ") "
+                + "[INFO]: " + msg.replace("&", "§"));
     }
 
     @MiCallable
     public static void warn(@NotNull final String script, @NotNull final String msg) {
-        Bukkit.getConsoleSender().sendMessage("(" + script + ") "
-                + Colorization.colorize("[WARN]: " + msg.replace("&", "§"), java.awt.Color.YELLOW));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "(" + script + ") "
+                + "[WARN]: " + msg.replace("&", "§"));
     }
 
     @MiCallable
     public static void error(@NotNull final String script, @NotNull final String msg) {
-        Bukkit.getConsoleSender().sendMessage("(" + script + ") "
-                + Colorization.colorize("[ERROR]: " + msg.replace("&", "§"), java.awt.Color.RED));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "(" + script + ") "
+                + "[ERROR]: " + msg.replace("&", "§"));
     }
 
     @MiCallable
