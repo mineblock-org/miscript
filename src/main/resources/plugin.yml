@@ -1,4 +1,4 @@
-name: MiScriptPlugin
+name: MiScript
 version: '${project.version}'
 main: org.mineblock.miscript.MiScriptPlugin
 api-version: 1.19

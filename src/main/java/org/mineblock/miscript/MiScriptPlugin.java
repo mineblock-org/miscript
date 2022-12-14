@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.crayne.mi.Mi;
 import org.crayne.mi.bytecode.common.ByteCodeInstruction;
 import org.crayne.mi.bytecode.communication.MiCommunicator;
+import org.crayne.mi.bytecode.communication.MiExecutionException;
 import org.crayne.mi.bytecode.reader.ByteCodeInterpreter;
 import org.jetbrains.annotations.NotNull;
 import org.mineblock.miscript.script.MiScript;
@@ -62,7 +63,11 @@ public final class MiScriptPlugin extends JavaPlugin {
 
     private static void executeScript(@NotNull final MiScript script, @NotNull final MiCommunicator communicator) {
         log("    Executing script '" + script.name() + "'...", Level.INFO);
-        communicator.invoke(script.module(), "on_enable");
+        try {
+            communicator.invoke(script.module(), "on_enable");
+        } catch (final MiExecutionException e) {
+            log("    Error executing script: " + e.getMessage(), Level.SEVERE);
+        }
     }
 
     private static void compileAllScripts() {
