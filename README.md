@@ -21,10 +21,9 @@ As you have set in your script info file, there is another file path that points
 mod hello {
 
     fn on_enable {
-        use misc;
-        console_log("&dhiiii! >:3");
+        console.log("&dhiiii! >:3");
     }
-
+    
 }
 ```
 The first line dictates that we will be using a module called 'hello'. THIS is what you set in your script info file as the `module` key. It acts like a 
