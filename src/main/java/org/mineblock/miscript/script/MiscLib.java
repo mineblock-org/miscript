@@ -306,7 +306,7 @@ STANDARDLIB_MI_FINISH_CODE;"""
     public static void message(@NotNull final String nameOrUUID, @NotNull final String message, final Boolean uuid) {
         final Optional<Player> online = player(nameOrUUID, uuid);
         if (online.isEmpty()) return;
-        Bukkit.getScheduler().runTask(plugin(), () -> online.get().sendMessage(message));
+        Bukkit.getScheduler().runTask(plugin(), () -> online.get().sendMessage(message.replace("&", "§")));
     }
 
     @MiCallable
@@ -476,7 +476,7 @@ STANDARDLIB_MI_FINISH_CODE;"""
                 .getBanList(type)
                 .getBanEntries()
                 .stream()
-                .map(b -> b.getTarget() + " banned by " + b.getSource() + " for '" + b.getReason() + "' at " + b.getCreated().toString() + " until " + b.getExpiration())
+                .map(b -> b.getTarget() + " banned by " + b.getSource() + " for '" + b.getReason() + "' at " + b.getCreated() + " until " + b.getExpiration())
                 .collect(Collectors.joining("\n"));
     }
 
