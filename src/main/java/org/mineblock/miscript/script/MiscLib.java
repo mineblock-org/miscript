@@ -49,6 +49,8 @@ mod strings {
     pub nat fn index_ofc :: int (string s, char c) -> "$stdstring";
     pub nat fn lindex_of :: int (string s, string s2) -> "$stdstring";
     pub nat fn lindex_ofc :: int (string s, char c) -> "$stdstring";
+    pub nat fn replace :: string (string s, string find, string replace) -> "$stdstring";
+    pub nat fn replace_all :: string (string s, string find, string replace) -> "$stdstring";
     
     pub nat nullable fn char_at :: char (string s, int i) -> "$stdstring";
     pub nat nullable fn substr :: string (string s, int i) -> "$stdstring";
@@ -185,6 +187,16 @@ mod console {
     
     pub fn error(string s) {
         error("$NAME", s);
+    }
+    
+    pub fn plain(string s) {
+        use strings;
+        if contains(s, "\\n") {
+            log("$NAME", "\\r" + replace(substr_bf(s, "\\n"), "\\r", "")
+                    + repeat(" ", 27) + "\\n" + replace(substr_af(s, "\\n"), "\\r", ""));
+            return;
+        }
+        log("$NAME", "\\r" + replace(s, "\\r", "") + repeat(" ", 27));
     }
         
 }

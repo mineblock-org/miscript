@@ -40,6 +40,18 @@ public class MiscString {
     }
 
     @MiCallable
+    @Nonnull
+    public static String replace(@NotNull final String s, @NotNull final String s1, @NotNull final String s2) {
+        return s.replace(s1, s2);
+    }
+
+    @MiCallable
+    @Nonnull
+    public static String replace_all(@NotNull final String s, @NotNull final String s1, @NotNull final String s2) {
+        return s.replaceAll(s1, s2);
+    }
+
+    @MiCallable
     public static Character char_at(@NotNull final String s, @NotNull final Integer i) {
         try {
             return s.charAt(i);
