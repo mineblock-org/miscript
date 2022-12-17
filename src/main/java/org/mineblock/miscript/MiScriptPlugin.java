@@ -23,7 +23,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 public final class MiScriptPlugin extends JavaPlugin {
@@ -31,7 +30,7 @@ public final class MiScriptPlugin extends JavaPlugin {
     private static String version;
 
     private static final Map<Integer, Set<MiScript>> scriptsWithPriorities = new HashMap<>();
-    private static final Map<MiScript, MiCommunicator> compiledScripts = new ConcurrentHashMap<>();
+    private static final Map<MiScript, MiCommunicator> compiledScripts = new HashMap<>();
 
     public static Map<MiScript, MiCommunicator> compiledScripts() {
         return compiledScripts;
@@ -47,12 +46,12 @@ public final class MiScriptPlugin extends JavaPlugin {
     }
 
     public static void reenable() {
-        compiledScripts.forEach(MiScriptPlugin::unloadScript);
+        new HashMap<>(compiledScripts).forEach(MiScriptPlugin::unloadScript);
         load();
     }
 
     public static void reload() {
-        compiledScripts.forEach(MiScriptPlugin::reloadScript);
+        new HashMap<>(compiledScripts).forEach(MiScriptPlugin::reloadScript);
     }
 
     public static void load() {
