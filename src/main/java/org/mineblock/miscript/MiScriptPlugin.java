@@ -2,6 +2,8 @@ package org.mineblock.miscript;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.crayne.mi.Mi;
@@ -10,6 +12,7 @@ import org.crayne.mi.bytecode.communication.MiCommunicator;
 import org.crayne.mi.bytecode.communication.MiExecutionException;
 import org.crayne.mi.bytecode.reader.ByteCodeInterpreter;
 import org.jetbrains.annotations.NotNull;
+import org.mineblock.miscript.command.MiscCommand;
 import org.mineblock.miscript.script.MiScript;
 import org.mineblock.miscript.script.event.MiscEventHandler;
 import org.mineblock.miscript.script.std.MiscLib;
@@ -24,8 +27,12 @@ import java.util.logging.Level;
 
 public final class MiScriptPlugin extends JavaPlugin {
 
-    private static final Map<Integer, MiScript> scriptsWithPriorities = new HashMap<>();
+    private static final Map<Integer, Set<MiScript>> scriptsWithPriorities = new HashMap<>();
     private static final Map<MiScript, MiCommunicator> compiledScripts = new HashMap<>();
+
+    public static Map<MiScript, MiCommunicator> compiledScripts() {
+        return compiledScripts;
+    }
 
     public void onEnable() {
         log(">>> Loading MiScript...", Level.INFO);
@@ -34,6 +41,8 @@ public final class MiScriptPlugin extends JavaPlugin {
         compileAllScripts();
         registerScriptEvents();
         finalizeAllScripts();
+        registerAllScriptCommands();
+        Objects.requireNonNull(getCommand("misc")).setExecutor(new MiscCommand());
     }
 
     public static Plugin plugin() {
@@ -50,6 +59,18 @@ public final class MiScriptPlugin extends JavaPlugin {
             return;
         }
         plugin().getLogger().log(level, String.valueOf(msg));
+    }
+
+    private static void registerAllScriptCommands() {
+        log(Colorization.colorize("Registering all script commands...", Color.GREEN.darker()), Level.INFO);
+        compiledScripts.keySet().forEach(MiScriptPlugin::registerScriptCommands);
+    }
+
+    private static void registerScriptCommands(@NotNull final MiScript script) {
+        log(Colorization.colorize("    Registering " + script.commands().size() + " command(s) for script '" + script.name() + "'...", Color.GREEN), Level.INFO);
+        script.commands().forEach(r -> Bukkit.getServer().getCommandMap().register("misc", new Command(r.command()) {
+            public boolean execute(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final String[] args) {return false;}
+        }));
     }
 
     private static void finalizeAllScripts() {
@@ -79,7 +100,7 @@ public final class MiScriptPlugin extends JavaPlugin {
 
     private static void compileAllScripts() {
         log(Colorization.colorize("Compiling scripts that need to be compiled...", Color.GRAY), Level.INFO);
-        scriptsWithPriorities.values().forEach(MiScriptPlugin::compileScript);
+        scriptsWithPriorities.values().forEach(sl -> sl.forEach(MiScriptPlugin::compileScript));
     }
 
     private static void compileScript(@NotNull final MiScript script) {
@@ -127,18 +148,6 @@ public final class MiScriptPlugin extends JavaPlugin {
         return f.getName().endsWith(".toml");
     }
 
-    public static boolean isUncompiledMiScriptFile(@NotNull final File f) {
-        return f.getName().endsWith(".misc");
-    }
-
-    public static boolean isCompiledMiScriptFile(@NotNull final File f) {
-        return f.getName().endsWith(".cmisc");
-    }
-
-    public static boolean isMiScriptFile(@NotNull final File f) {
-        return isUncompiledMiScriptFile(f) || isCompiledMiScriptFile(f);
-    }
-
     private static void loadScript(@NotNull final File script) {
         if (!isScriptInfoFile(script)) return;
 
@@ -149,7 +158,7 @@ public final class MiScriptPlugin extends JavaPlugin {
         final boolean nameNull = miScript.name() == null;
         final boolean filepathNull = miScript.filepath() == null;
         final boolean moduleNull = miScript.module() == null;
-        final boolean alreadyLoaded = scriptsWithPriorities.values().stream().anyMatch(s -> s.name().equals(miScript.name()));
+        final boolean alreadyLoaded = scriptsWithPriorities.values().stream().anyMatch(sl-> sl.stream().anyMatch(s -> s.name().equals(miScript.name())));
 
         if (nameNull)      log("    Invalid miscript " + script.getName() + "; no name provided.", Level.SEVERE);
         if (filepathNull)  log("    Invalid miscript " + script.getName() + "; no script file provided.", Level.SEVERE);
@@ -160,7 +169,8 @@ public final class MiScriptPlugin extends JavaPlugin {
             log(Colorization.colorize("    Could not load script", Color.RED), Level.SEVERE);
             return;
         }
-        scriptsWithPriorities.put(miScript.priority(), miScript);
+        scriptsWithPriorities.putIfAbsent(miScript.priority(), new HashSet<>());
+        scriptsWithPriorities.get(miScript.priority()).add(miScript);
         log(Colorization.colorize("    Successfully loaded script", Color.GREEN), Level.INFO);
     }
 

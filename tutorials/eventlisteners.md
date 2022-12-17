@@ -333,7 +333,7 @@ not cancellable PlayerChangedMainHandEvent
 not cancellable PlayerChangedWorldEvent                           
 cancellable PlayerChatEvent                           
 not cancellable PlayerChatTabCompleteEvent                           
-cancellable PlayerCommandPreprocessEvent                           
+cancellable PlayerCommandPreprocessEvent(string player_uuid, string message)
 not cancellable PlayerCommandSendEvent                           
 cancellable PlayerDropItemEvent                           
 cancellable PlayerEditBookEvent                           
@@ -388,7 +388,7 @@ not cancellable MapInitializeEvent
 not cancellable PluginDisableEvent                           
 not cancellable PluginEnableEvent                           
 cancellable RemoteServerCommandEvent                           
-cancellable ServerCommandEvent                           
+cancellable ServerCommandEvent(string command)
 not cancellable ServerListPingEvent                           
 not cancellable ServerLoadEvent                           
 not cancellable ServiceRegisterEvent                           

@@ -3,6 +3,7 @@ package org.mineblock.miscript.script;
 import com.moandjiezana.toml.Toml;
 import org.jetbrains.annotations.NotNull;
 import org.mineblock.miscript.script.event.MiscEventListener;
+import org.mineblock.miscript.script.event.MiscRegisteredCommand;
 
 import java.io.File;
 import java.io.InputStream;
@@ -17,16 +18,30 @@ public class MiScript {
     private final String filepath;
     private final Integer priority;
     private final List<MiscEventListener> listeners;
+    private final List<MiscRegisteredCommand> commands;
+
+    public MiScript(@NotNull final String name, @NotNull final String filepath, @NotNull final String module, final int priority, @NotNull final List<MiscRegisteredCommand> commands,
+                    @NotNull final Collection<MiscEventListener> listeners, @NotNull final String description, @NotNull final String... authors) {
+        this.name = name;
+        this.description = description;
+        this.module = module;
+        this.authors = new ArrayList<>(Arrays.asList(authors));
+        this.priority = priority;
+        this.filepath = filepath;
+        this.listeners = new ArrayList<>(listeners);
+        this.commands = new ArrayList<>(commands);
+    }
 
     public MiScript(@NotNull final String name, @NotNull final String filepath, @NotNull final String module, final int priority,
                     @NotNull final Collection<MiscEventListener> listeners, @NotNull final String description, @NotNull final String... authors) {
         this.name = name;
         this.description = description;
         this.module = module;
-        this.authors = Arrays.asList(authors);
+        this.authors = new ArrayList<>(Arrays.asList(authors));
         this.priority = priority;
         this.filepath = filepath;
         this.listeners = new ArrayList<>(listeners);
+        this.commands = new ArrayList<>();
     }
 
     public MiScript(@NotNull final String name, @NotNull final String filepath, @NotNull final String module, final int priority,
@@ -38,16 +53,18 @@ public class MiScript {
         this.priority = priority;
         this.filepath = filepath;
         this.listeners = new ArrayList<>(listeners);
+        this.commands = new ArrayList<>();
     }
 
     public MiScript(@NotNull final String name, @NotNull final String filepath, @NotNull final String module, final int priority, @NotNull final String description, @NotNull final String... authors) {
         this.name = name;
         this.description = description;
         this.module = module;
-        this.authors = Arrays.asList(authors);
+        this.authors = new ArrayList<>(Arrays.asList(authors));
         this.priority = priority;
         this.filepath = filepath;
         this.listeners = new ArrayList<>();
+        this.commands = new ArrayList<>();
     }
 
     public MiScript(@NotNull final String name, @NotNull final String filepath, @NotNull final String module, final int priority, @NotNull final String description, @NotNull final Collection<String> authors) {
@@ -58,6 +75,7 @@ public class MiScript {
         this.priority = priority;
         this.filepath = filepath;
         this.listeners = new ArrayList<>();
+        this.commands = new ArrayList<>();
     }
 
     public MiScript(@NotNull final String name, @NotNull final String filepath, @NotNull final String module, @NotNull final String description, @NotNull final Collection<String> authors) {
@@ -68,16 +86,18 @@ public class MiScript {
         this.priority = 1000;
         this.filepath = filepath;
         this.listeners = new ArrayList<>();
+        this.commands = new ArrayList<>();
     }
 
     public MiScript(@NotNull final String name, @NotNull final String filepath, @NotNull final String module, @NotNull final String... authors) {
         this.name = name;
         this.description = "[no description provided]";
         this.module = module;
-        this.authors = Arrays.asList(authors);
+        this.authors = new ArrayList<>(Arrays.asList(authors));
         this.priority = 1000;
         this.filepath = filepath;
         this.listeners = new ArrayList<>();
+        this.commands = new ArrayList<>();
     }
 
     public MiScript(@NotNull final String name, @NotNull final String filepath, @NotNull final String module, @NotNull final Collection<String> authors) {
@@ -88,6 +108,7 @@ public class MiScript {
         this.priority = 1000;
         this.filepath = filepath;
         this.listeners = new ArrayList<>();
+        this.commands = new ArrayList<>();
     }
 
     public List<String> authors() {
@@ -116,6 +137,10 @@ public class MiScript {
 
     public List<MiscEventListener> listeners() {
         return Optional.ofNullable(listeners).orElse(Collections.emptyList());
+    }
+
+    public List<MiscRegisteredCommand> commands() {
+        return Optional.ofNullable(commands).orElse(Collections.emptyList());
     }
 
     private static Toml createToml(@NotNull final InputStream inputStream) {

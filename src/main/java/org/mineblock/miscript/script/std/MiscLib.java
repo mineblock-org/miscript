@@ -16,7 +16,7 @@ import static org.mineblock.miscript.MiScriptPlugin.plugin;
 public class MiscLib {
 
     public static String library() {
-        return """
+        String lib = """
 pub? true = 1b;
 pub? false = 0b;
 
@@ -200,12 +200,26 @@ mod console {
     }
         
 }
-STANDARDLIB_MI_FINISH_CODE;"""
+""";
+
+        if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+            lib += """
+mod worldguard {
+    
+    pub nat fn in_region :: bool (string player, string region, bool use_uuid) -> "$stdworldguard";
+    
+}
+                    """.replace("$stdworldguard", MiscWorldguard.class.getName());
+        }
+
+        lib += "STANDARDLIB_MI_FINISH_CODE;";
+        lib = lib
                 .replace("$stdmisc", MiscLib.class.getName())
                 .replace("$stdfiles", MiscFilesLib.class.getName())
                 .replace("$stdib", MiscItemBlockLib.class.getName())
                 .replace("$stdclass", MiscStd.class.getName())
                 .replace("$stdstring", MiscString.class.getName());
+        return lib;
     }
 
     @MiCallable

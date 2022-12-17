@@ -5,11 +5,16 @@ import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
 import org.bukkit.Bukkit;
-import org.bukkit.event.*;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityAirChangeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.server.ServerCommandEvent;
 import org.crayne.mi.bytecode.common.ByteDatatype;
 import org.crayne.mi.bytecode.communication.MiCommunicator;
 import org.crayne.mi.bytecode.communication.Value;
@@ -83,12 +88,14 @@ public class MiscEventHandler implements Listener {
         registeredListeners.get(eventListener.event()).put(new RegisteredMiscEventListener(script, communicator), eventListener.priority());
     }
 
-    private static Object[] argumentsForEvent(@NotNull final Event event) {
-        return switch (event.getEventName()) {
-            case "PlayerJoinEvent" -> new Object[] {((PlayerJoinEvent) event).getPlayer().getUniqueId().toString()};
-            case "PlayerRespawnEvent" -> new Object[] {((PlayerRespawnEvent) event).getPlayer().getUniqueId().toString()};
-            case "EntityAirChangeEvent" -> new Object[] {((EntityAirChangeEvent) event).getEntity().getUniqueId().toString(), ((EntityAirChangeEvent) event).getEntity().getType().name()};
-            case "FoodLevelChangeEvent" -> new Object[] {((FoodLevelChangeEvent) event).getEntity().getUniqueId().toString(), ((FoodLevelChangeEvent) event).getFoodLevel(), ((FoodLevelChangeEvent) event).getEntity().getFoodLevel()};
+    private static Object[] argumentsForEvent(@NotNull final Event ev) {
+        return switch (ev.getEventName()) {
+            case "PlayerJoinEvent" -> new Object[] {((PlayerJoinEvent) ev).getPlayer().getUniqueId().toString()};
+            case "PlayerRespawnEvent" -> new Object[] {((PlayerRespawnEvent) ev).getPlayer().getUniqueId().toString()};
+            case "EntityAirChangeEvent" -> new Object[] {((EntityAirChangeEvent) ev).getEntity().getUniqueId().toString(), ((EntityAirChangeEvent) ev).getEntity().getType().name()};
+            case "FoodLevelChangeEvent" -> new Object[] {((FoodLevelChangeEvent) ev).getEntity().getUniqueId().toString(), ((FoodLevelChangeEvent) ev).getFoodLevel(), ((FoodLevelChangeEvent) ev).getEntity().getFoodLevel()};
+            case "PlayerCommandPreprocessEvent" -> new Object[] {((PlayerCommandPreprocessEvent) ev).getPlayer().getUniqueId().toString(), ((PlayerCommandPreprocessEvent) ev).getMessage()};
+            case "ServerCommandEvent" -> new Object[] {((ServerCommandEvent) ev).getCommand()};
             default -> new Object[0];
         };
     }
