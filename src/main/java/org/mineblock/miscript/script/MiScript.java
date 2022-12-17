@@ -19,6 +19,7 @@ public class MiScript {
     private final Integer priority;
     private final List<MiscEventListener> listeners;
     private final List<MiscRegisteredCommand> commands;
+    private volatile boolean active;
 
     public MiScript(@NotNull final String name, @NotNull final String filepath, @NotNull final String module, final int priority, @NotNull final List<MiscRegisteredCommand> commands,
                     @NotNull final Collection<MiscEventListener> listeners, @NotNull final String description, @NotNull final String... authors) {
@@ -109,6 +110,14 @@ public class MiScript {
         this.filepath = filepath;
         this.listeners = new ArrayList<>();
         this.commands = new ArrayList<>();
+    }
+
+    public void markAs(final boolean active) {
+        this.active = active;
+    }
+
+    public boolean active() {
+        return active;
     }
 
     public List<String> authors() {

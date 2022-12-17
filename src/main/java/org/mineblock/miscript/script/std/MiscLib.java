@@ -2,6 +2,7 @@ package org.mineblock.miscript.script.std;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.crayne.mi.lang.MiCallable;
 import org.jetbrains.annotations.NotNull;
@@ -90,6 +91,9 @@ mod misc {
     pub nat fn opped(string name_or_uuid, bool b, bool uuid) -> "$stdmisc";
     pub nat fn is_opped :: bool(string playername) -> "$stdmisc";
     pub nat fn is_opped :: bool(string name_or_uuid, bool uuid) -> "$stdmisc";
+    
+    pub nat fn unknown_command(string name_or_uuid, bool uuid) -> "$stdmisc";
+    pub nat fn unknown_command() -> "$stdmisc";
     
     pub nat fn gamemode(string playername, string mode) -> "$stdmisc";
     pub nat fn gamemode(string name_or_uuid, string mode, bool uuid) -> "$stdmisc";
@@ -268,6 +272,20 @@ mod worldguard {
             return;
         }
         offline.setOp(b);
+    }
+
+    public static void unknownCommand(@NotNull final CommandSender sender) {
+        Bukkit.getServer().dispatchCommand(sender, "//////////////");
+    }
+
+    @MiCallable
+    public static void unknown_command(@NotNull final String player, @NotNull final Boolean use_uuid) {
+        player(player, use_uuid).ifPresent(MiscLib::unknownCommand);
+    }
+
+    @MiCallable
+    public static void unknown_command() {
+        unknownCommand(Bukkit.getConsoleSender());
     }
 
     @MiCallable

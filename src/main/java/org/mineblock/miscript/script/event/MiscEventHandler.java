@@ -88,6 +88,16 @@ public class MiscEventHandler implements Listener {
         registeredListeners.get(eventListener.event()).put(new RegisteredMiscEventListener(script, communicator), eventListener.priority());
     }
 
+    public static void unregisterMiscEventListener(@NotNull final MiScript script, @NotNull final MiscEventListener eventListener) {
+        Optional.ofNullable(registeredListeners.get(eventListener.event()))
+                .ifPresent(r -> r
+                        .keySet()
+                        .stream()
+                        .filter(r2 -> r2.script().name().equals(script.name()))
+                        .forEach(r::remove)
+                );
+    }
+
     private static Object[] argumentsForEvent(@NotNull final Event ev) {
         return switch (ev.getEventName()) {
             case "PlayerJoinEvent" -> new Object[] {((PlayerJoinEvent) ev).getPlayer().getUniqueId().toString()};
