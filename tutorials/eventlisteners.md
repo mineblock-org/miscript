@@ -30,7 +30,12 @@ fn XYZEvent(type1 name1, type2 name2, ...) {
 }
 ```
 An event can, in some cases, accept event-specific arguments, for example you will definetly need the player that did something when listening
-for player events. As an example, let's take the PlayerJoinEvent.
+for player events. As an example, let's take the PlayerJoinEvent. Our `script.toml` will look like this:
+```toml
+...
+[[listeners]]
+event = "PlayerJoinEvent"
+```
 ```
 fn PlayerJoinEvent(string player_uuid) {
 
@@ -50,11 +55,17 @@ any arguments, but those will be added when needed.
 ### Cancelling Events
 Some events can also be cancelled and prevented from happening. To cancel events in miscript, you simply make your event listener function
 return a boolean value.
+```toml
+...
+[[listeners]]
+event = "FoodLevelChangeEvent"
+```
 ```
 fn FoodLevelChangeEvent :: bool (string player_uuid, int new_food_level, int previous_food_level) {
     return true; // do we want to cancel it? YES; so the return value here must be true.
 }
 ```
+In this case, all hunger will be globally cancelled on the server.
 To see which events can be cancelled, see the below list. Trying to cancel an event that cannot be cancelled will simply not do anything.
 # The Event List (use the spigotmc docs to check for what the event does)
 ```
