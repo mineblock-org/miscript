@@ -32,7 +32,7 @@ fn XYZEvent(type1 name1, type2 name2, ...) {
 An event can, in some cases, accept event-specific arguments, for example you will definetly need the player that did something when listening
 for player events. As an example, let's take the PlayerJoinEvent. Our `script.toml` will look like this:
 ```toml
-...
+# ...
 [[listeners]]
 event = "PlayerJoinEvent"
 ```
@@ -56,7 +56,7 @@ any arguments, but those will be added when needed.
 Some events can also be cancelled and prevented from happening. To cancel events in miscript, you simply make your event listener function
 return a boolean value.
 ```toml
-...
+# ...
 [[listeners]]
 event = "FoodLevelChangeEvent"
 ```
@@ -241,7 +241,7 @@ cancellable BatToggleSleepEvent
 cancellable CreatureSpawnEvent                           
 cancellable CreeperPowerEvent                           
 cancellable EnderDragonChangePhaseEvent                           
-cancellable EntityAirChangeEvent(string entity_uuid, string entity_type)
+cancellable EntityAirChangeEvent(string entity_uuid, string entity_type, int new_air_level, int previous_air_level)
 cancellable EntityBreakDoorEvent                           
 cancellable EntityBreedEvent                           
 cancellable EntityChangeBlockEvent                           

@@ -5,6 +5,7 @@ import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
@@ -102,7 +103,8 @@ public class MiscEventHandler implements Listener {
         return switch (ev.getEventName()) {
             case "PlayerJoinEvent" -> new Object[] {((PlayerJoinEvent) ev).getPlayer().getUniqueId().toString()};
             case "PlayerRespawnEvent" -> new Object[] {((PlayerRespawnEvent) ev).getPlayer().getUniqueId().toString()};
-            case "EntityAirChangeEvent" -> new Object[] {((EntityAirChangeEvent) ev).getEntity().getUniqueId().toString(), ((EntityAirChangeEvent) ev).getEntity().getType().name()};
+            case "EntityAirChangeEvent" -> new Object[] {((EntityAirChangeEvent) ev).getEntity().getUniqueId().toString(), ((EntityAirChangeEvent) ev).getEntity().getType().name(),
+                    ((EntityAirChangeEvent) ev).getAmount(), ((EntityAirChangeEvent) ev).getEntity() instanceof final LivingEntity le ? le.getRemainingAir() : ((EntityAirChangeEvent) ev).getAmount()};
             case "FoodLevelChangeEvent" -> new Object[] {((FoodLevelChangeEvent) ev).getEntity().getUniqueId().toString(), ((FoodLevelChangeEvent) ev).getFoodLevel(), ((FoodLevelChangeEvent) ev).getEntity().getFoodLevel()};
             case "PlayerCommandPreprocessEvent" -> new Object[] {((PlayerCommandPreprocessEvent) ev).getPlayer().getUniqueId().toString(), ((PlayerCommandPreprocessEvent) ev).getMessage()};
             case "ServerCommandEvent" -> new Object[] {((ServerCommandEvent) ev).getCommand()};
