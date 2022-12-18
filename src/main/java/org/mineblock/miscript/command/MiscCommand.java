@@ -33,12 +33,12 @@ public class MiscCommand implements CommandExecutor {
             return true;
         }
         return switch (args[0]) {
-            case "reload" -> reloadMisc(sender, args);
-            case "list" -> listMisc(sender);
+            case "restart" -> restart(sender, args);
+            case "list" -> listScripts(sender);
             case "version" -> sendVersion(sender);
             case "disable" -> disableScript(sender, args);
             case "enable" -> enableScript(sender, args);
-            case "restart" -> restartMisc(sender);
+            case "reload" -> reload(sender);
             case "info" -> showScriptInfo(sender, args);
             default -> false;
         };
@@ -49,7 +49,7 @@ public class MiscCommand implements CommandExecutor {
         return true;
     }
 
-    private static boolean listMisc(@NotNull final CommandSender sender) {
+    private static boolean listScripts(@NotNull final CommandSender sender) {
         final List<MiScript> loadedScripts = MiScriptPlugin.compiledScripts().keySet().stream().toList();
         sender.sendMessage(Colorization.colorize("Currently active script(s) [" + loadedScripts.size() + "]: ", MISCRIPT_COLOR));
         sender.sendMessage(listScripts(loadedScripts));
@@ -125,7 +125,7 @@ public class MiscCommand implements CommandExecutor {
         return true;
     }
 
-    private static boolean reloadMisc(@NotNull final CommandSender sender, @NotNull final String... args) {
+    private static boolean restart(@NotNull final CommandSender sender, @NotNull final String... args) {
         if (args.length != 1) {
             final String scriptStr = args[1];
             final Optional<MiScript> script = MiScriptPlugin.findScriptByName(scriptStr);
@@ -145,7 +145,7 @@ public class MiscCommand implements CommandExecutor {
         return true;
     }
 
-    private static boolean restartMisc(@NotNull final CommandSender sender) {
+    private static boolean reload(@NotNull final CommandSender sender) {
         sender.sendMessage(Colorization.colorize("Restarting MiScript...", Color.GREEN));
         MiScriptPlugin.reenable();
         sender.sendMessage(Colorization.colorize("Successfully restarted MiScript.", Color.GREEN));

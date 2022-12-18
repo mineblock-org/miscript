@@ -397,6 +397,7 @@ mod worldguard {
     public static Boolean has_group(@NotNull final String player, @NotNull final Boolean use_uuid, @NotNull final String group) {
         return player(player, use_uuid).map(p -> hasGroup(p, group)).orElse(false);
     }
+
     public static boolean hasPermission(@NotNull final Player p, @NotNull final String perm) {
         return p.hasPermission(perm);
     }
