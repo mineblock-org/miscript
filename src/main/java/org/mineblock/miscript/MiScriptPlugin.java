@@ -16,6 +16,7 @@ import org.mineblock.miscript.command.MiscCommand;
 import org.mineblock.miscript.script.MiScript;
 import org.mineblock.miscript.script.event.MiscEventHandler;
 import org.mineblock.miscript.script.std.MiscLib;
+import org.mineblock.miscript.script.timer.MiscTimerTask;
 import org.mineblock.miscript.util.Colorization;
 
 import java.awt.*;
@@ -57,7 +58,7 @@ public final class MiScriptPlugin extends JavaPlugin {
     public static void load() {
         loadAllScripts();
         compileAllScripts();
-        registerScriptEvents();
+        registerScriptEventsTimers();
         finalizeAllScripts();
         registerAllScriptCommands();
     }
@@ -79,7 +80,7 @@ public final class MiScriptPlugin extends JavaPlugin {
     public static void enableScript(@NotNull final MiScript miScript, @NotNull final MiCommunicator communicator) {
         executeScript(miScript, communicator);
         registerScriptCommands(miScript);
-        registerScriptEventListeners(miScript, communicator);
+        registerScriptEventsTimers(miScript, communicator);
         miScript.markAs(true);
     }
 
@@ -159,18 +160,20 @@ public final class MiScriptPlugin extends JavaPlugin {
         });
     }
 
-    private static void registerScriptEvents() {
+    private static void registerScriptEventsTimers() {
         log(Colorization.colorize("Registering all script event listeners...", Color.CYAN.darker()), Level.INFO);
-        compiledScripts.forEach(MiScriptPlugin::registerScriptEventListeners);
+        compiledScripts.forEach(MiScriptPlugin::registerScriptEventsTimers);
     }
 
-    private static void registerScriptEventListeners(@NotNull final MiScript script, @NotNull final MiCommunicator communicator) {
+    private static void registerScriptEventsTimers(@NotNull final MiScript script, @NotNull final MiCommunicator communicator) {
         log(Colorization.colorize("    Registering " + script.listeners().size() + " eventlistener(s) for script '" + script.name() + "'...", Color.CYAN), Level.INFO);
         script.listeners().forEach(l -> MiscEventHandler.registerMiscEventListener(communicator, script, l));
+        script.timers().forEach(t -> MiscTimerTask.registerTimerTask(communicator, script, t));
     }
 
     private static void unregisterScriptEventListeners(@NotNull final MiScript script) {
         script.listeners().forEach(l -> MiscEventHandler.unregisterMiscEventListener(script, l));
+        MiscTimerTask.unregisterTimerTasks(script);
     }
 
     private static void executeScript(@NotNull final MiScript script, @NotNull final MiCommunicator communicator) {

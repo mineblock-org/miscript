@@ -69,7 +69,7 @@ public class MiscEventHandler implements Listener {
         listeners.forEach(l -> {
             final Object[] args = argumentsForEvent(event);
             try {
-                final Optional<Value> result = l.communicator().invoke(l.script().module() + "." + event.getEventName(), args);
+                final Optional<Value> result = l.communicator().newThread().invoke(l.script().module() + "." + event.getEventName(), args);
 
                 if (result.isPresent() && result.get().value() != null
                         && result.get().type().byteDatatype().equals(ByteDatatype.BOOL)
